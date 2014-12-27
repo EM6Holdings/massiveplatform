@@ -159,12 +159,23 @@ Right now, this is beta (probably alpha) software that is nearing production rel
     <li>Mobile / Tablet / Desktop</li>
     <li>Follow / Join Rate Limits</li>
     <li>Search Content</li>
-    <li>Google Universal Analytics (TODO)</li>
+    <li>Google Universal Analytics</li>
   </ul>
 </div>
 
 <div style="clear: both;"></div>
 
+<div style='float: left; width: 50%;'>
+  <h4>User Roles</h4>
+  <ul>
+    <li>Anonymous (View)</li>
+    <li>Un-Approved Member</li>
+    <li>Approved Member</li>
+    <li>Chapter Leader</li>
+    <li>Moderator</li>
+    <li>Adminstrator (Drupal)</li>
+  </ul>
+</div>
 
 <div style='float: left;'>
 <h4>Drupal Features</h4>
@@ -259,8 +270,7 @@ Checking out files: 100% (6926/6926), done.
 
 <p>
 <h4>2. Create database and permissions</h4>
-<pre><code>
-ubuntu@localhost$ mysql
+<pre><code>ubuntu@localhost$ mysql
 
 mysql> create database massiveplatform;
 Query OK, 1 row affected (0.01 sec)
@@ -372,6 +382,7 @@ Here are the default logins for the site (in "username / password" format):
   <li>drush pm-disable tm_notifications (<span style='font-weight: bold;'>disable notifications before importing data</span>)</li>
   <li>drush mi --all --rollback --force (<span style='font-weight: bold;'>rollback and reload all sample data</span>)</li>
   <li>drush pm-enable tm_notifications (<span style='font-weight: bold;'>enable notifications after data</span>)</li>
+  <li>drush search-reindex --immediate (<span style='font-weight: bold;'>re-index the search</span>)</li>
 </ul>
 </p>
 
@@ -385,7 +396,7 @@ Here are the default logins for the site (in "username / password" format):
 'default-system' => 'DevelMailLog',
 );</li>
   <li>Update your industry taxonomy from massiveplatform_setup_files/segment_taxonomy_import.csv, use taxonomy_csv module.</li>
-
+  <li>Google Anlaytics available by Drupal module (drush en google_analytics)</li>
 </ul>
 </p>
 
