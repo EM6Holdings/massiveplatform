@@ -190,7 +190,7 @@ Our Core focus is on developing features to support the needs of the Travel Mass
 <div style='float: left; width: 50%;'>
 <h4>Little Things</h4>
 <ul>
-  <li>API Feeds (RESTful)</li>
+  <li>More API Feeds (ie: Calendar feed)</li>
   <li>Tweet Events</li>
   <li>Import Wordpress Content</li>
   <li>Sign In With LinkedIn</li>
@@ -381,10 +381,20 @@ There are a number of user roles that come shipped to allow for management of th
       A community manager role, allowing creation of chapters, edit any event, chapter, company or profile info.
     </li>
   </ul>
-</div>
-
-
 </p>
+
+<p>
+  <h3>Massive Platform API</h3>
+  There is a basic API provided by the tm_api module. You can add your own API hooks in here. Currently the following (basic) read-only API methods are published.
+  <ul>
+    <li>api/public/test - API test page</li>
+    <li>api/public/stats - basic stats</li>
+    <li>api/public/chapters_lat_lon - chapters lat and lon</li>
+  </ul>
+All results as returned as JSON. For JSONP append ?callback=myfunction to the URL. 
+  </ul>
+</p>
+
 <p>
 <h3>Development Tips</h3>
 
