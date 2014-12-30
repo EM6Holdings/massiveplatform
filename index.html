@@ -325,19 +325,8 @@ sudo chmod 444 /var/www/massiveplatform/sites/default/settings.php
 Note: This works for local development, but on a production server you should review all file permissions.
 </p>
 
-
 <p>
-<h4>8. Enable the redirect module</h4>
-<pre><code>cd /var/www/massiveplatform
-drush dl redirect
-drush en redirect
-</pre></code>
-(If you get an error such as "Failed opening required '/var/www/massiveplatform/sites/all/modules/contrib/redirect/redirect.module'" then you need to do this step.)
-</p>
-
-
-<p>
-<h4>9. Ready!</h4>
+<h4>8. Ready!</h4>
 <p>
 Ok, now point your browser to your web server. If you are developing on your local server you can probably use "localhost", or if you have a configured hosts files you can use "localdev.massiveplatform.com" as we've used in our example.
 </p>
