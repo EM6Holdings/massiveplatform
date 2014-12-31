@@ -15,6 +15,7 @@ function tm_invitations_user_default_permissions() {
     'name' => 'tm invite all chapters',
     'roles' => array(
       'administrator' => 'administrator',
+      'moderator' => 'moderator',
     ),
     'module' => 'tm_invitations',
   );
@@ -24,6 +25,8 @@ function tm_invitations_user_default_permissions() {
     'name' => 'tm invite own chapters',
     'roles' => array(
       'administrator' => 'administrator',
+      'chapter leader' => 'chapter leader',
+      'moderator' => 'moderator',
     ),
     'module' => 'tm_invitations',
   );
@@ -32,7 +35,9 @@ function tm_invitations_user_default_permissions() {
   $permissions['tm invite unlimited'] = array(
     'name' => 'tm invite unlimited',
     'roles' => array(
+      'administrator' => 'administrator',
       'chapter leader' => 'chapter leader',
+      'moderator' => 'moderator',
     ),
     'module' => 'tm_invitations',
   );
