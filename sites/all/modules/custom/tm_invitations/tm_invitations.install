@@ -59,6 +59,7 @@ $schema['tm_invitations'] = array(
     ),
     'indexes' => array(
       'inviter' => array('uid'),
+      'node' => array('nid'),
     ),
     'unique keys' => array(
       'id' => array('id'),
