@@ -86,7 +86,14 @@ function redirect_schema() {
         'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
-        'description' => 'The timestamp of when the redirect was last accessed.'
+        'description' => 'The timestamp of when the redirect was last accessed.',
+      ),
+      'status' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 1,
+        'description' => 'Boolean indicating whether the redirect is enabled (visible to non-administrators).',
       ),
     ),
     'primary key' => array('rid'),
@@ -95,7 +102,11 @@ function redirect_schema() {
     ),
     'indexes' => array(
       'expires' => array('type', 'access'),
-      'source_language' => array('source', 'language'),
+      'status_source_language' => array(
+        'status',
+        'source',
+        'language',
+      ),
     ),
   );
 
@@ -264,6 +275,14 @@ function redirect_update_7000(&$sandbox) {
 }
 
 /**
+ * Registry and entity info rebuild.
+ */
+function redirect_update_7100() {
+    registry_rebuild();
+    entity_info_cache_clear();
+}
+
+/**
  * Migrate a path redirect redirect to a redirect redirect.
  */
 function _redirect_migrate_path_redirect_redirect($old_redirect) {
@@ -315,6 +334,7 @@ function _redirect_migrate_path_redirect_redirect($old_redirect) {
         'redirect_options' => serialize($redirect->redirect_options),
         'language' => $redirect->language,
         'status_code' => $redirect->status_code,
+        'status' => 1,
         'count' => 0,
         'access' => $old_redirect->last_used,
       ))
@@ -354,5 +374,73 @@ function _redirect_migrate_path_redirect_variables() {
 
     // Delete the old path redirect variable.
     variable_del($old_variable);
+  }
+}
+
+/**
+ * Add status field to redirect table.
+ */
+function redirect_update_7101() {
+  $field = array(
+    'type' => 'int',
+    'unsigned' => TRUE,
+    'not null' => TRUE,
+    'default' => 1,
+    'description' => 'Boolean indicating whether the redirect is enabled (visible to non-administrators).',
+  );
+  db_add_field('redirect', 'status', $field);
+  db_drop_index('redirect', 'source_language');
+  db_add_index('redirect', 'status_source_language', array(
+    'status',
+    'source',
+    'language',
+  ));
+
+  cache_clear_all('schema', 'cache', TRUE);
+}
+
+/**
+ * Disable existing redirects that could cause infinite loops.
+ */
+function redirect_update_7102(&$sandbox) {
+  $result = db_query(
+    "SELECT r.rid, r.source, r.redirect
+    FROM redirect r
+      INNER JOIN url_alias u
+        ON r.source = u.alias
+        AND r.redirect = u.source
+        AND r.language = u.language"
+  );
+
+  if ($result->rowCount() > 0) {
+    $disabled_redirects_list = array();
+    $rids_to_disable = array();
+
+    foreach ($result as $row) {
+      $redirect_link = l($row->redirect, $row->redirect);
+      $source_link = l($row->source, $row->source);
+
+      $disabled_redirects_list[] = $redirect_link . ' => ' . $source_link;
+      $rids_to_disable[] = $row->rid;
+    }
+
+    // Disable redirects
+    redirect_change_status_multiple($rids_to_disable, 0);
+
+    $disabled_redirects_list = theme_item_list(array(
+      'title' => '',
+      'items' => $disabled_redirects_list,
+      'type' => 'ul',
+      'attributes' => array(),
+    ));
+
+    $disabled_redirects_message = format_plural(count($rids_to_disable),
+      '1 circular redirect causing infinite loop was disabled:',
+      '@count circular redirects causing infinite loop were disabled:');
+
+    return $disabled_redirects_message . $disabled_redirects_list;
+  }
+  else {
+    return t('No circular redirects were found that could cause infinite loops.');
   }
 }
