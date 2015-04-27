@@ -62,7 +62,7 @@
 </p>
 
 <p><h3>What Is Massive Platform?</h3>
-<a href='http://www.travelmassive.com'>Travel Massive</a> is a world-wide community in more than 70 cities (see our <a target="_blank" href="http://www.travelmassive.org/#stats">latest stats</a>), connecting thousands of travel insiders at locally organised events to empower change in the travel industry and make travel better. You learn more on our <a href="http://www.travelmassive.org">public manifesto</a>.</p>
+<a href='http://www.travelmassive.com'>Travel Massive</a> is a world-wide community in more than 85 cities (see our <a target="_blank" href="http://www.travelmassive.org/#stats">latest stats</a>), connecting thousands of travel insiders at locally organised events to empower change in the travel industry and make travel better. You learn more on our <a href="http://www.travelmassive.org">public manifesto</a>.</p>
 <p>
 We developed <span style='text-decoration: underline;'>Massive Platform</span> to help our members connect more easily and to provide a centralized place for profiles and events. We outgrew all the usual tools such as Facebook pages and Meetup, and we wanted our own community platform, so we built one. We've made our platform open-source so that other communities can benefit from and build on our efforts and help make this product awesome.</p>
 <p>
@@ -144,6 +144,7 @@ As of January 2015 we've just launched, but we'd love to have more contributors.
 <div style='float: left;'>
 <h4>Notification Features</h4>
 <ul>
+  <li>Member messaging via email</li>
   <li>Welcome Approved members</li>
   <li>Custom Chapter Announcements</li>
   <li>Notify on new Follower</li>
@@ -157,6 +158,7 @@ As of January 2015 we've just launched, but we'd love to have more contributors.
   <h4>Other Features</h4>
   <ul>
     <li>Responsive HTML5 Design</li>
+    <li>Video background front page</li>
     <li>Clean HTML Emails</li>
     <li>Mobile / Tablet / Desktop</li>
     <li>Follow / Join Rate Limits</li>
@@ -232,6 +234,7 @@ If you are developing with Ubuntu (our preference) you can get up and running ea
 sudo apt-get install mysql-server php5-mysql
 sudo apt-get install nginx
 sudo apt-get install php5-fpm
+sudo apt-get install php5-gd
 sudo apt-get install drush
 # for sending mail, your favorite MTA
 sudo apt-get install postfix
@@ -279,8 +282,8 @@ Query OK, 0 rows affected (0.03 sec)
 <h4>3. Create an nginx configuration file</h4>
 We've created a sample configuration file in the 'massiveplatform_setup_files' folder to get started.
 <pre><code>cd /var/www/massiveplatform
-sudo cp massiveplatform_setup_files/localdev.massiveplatform.com.conf /etc/nginx/site-enabled
-!/etc/init.d/nginx restart
+sudo cp massiveplatform_setup_files/localdev.massiveplatform.com.conf /etc/nginx/sites-enabled
+/etc/init.d/nginx restart
 </code></pre>
 </p>
 
@@ -364,6 +367,7 @@ There are a number of user roles that come shipped to allow for management of th
     <li><span style='font-weight: bold;'>Un-Approved Member</span><br>
       A freshly signed up member.
       <br>Can join events, update profile and follow other members or companies.
+      <b>Profile displayed on /community page but no chapter member pages
     </li>
     <li><span style='font-weight: bold;'>Approved Member</span><br>
       Can create a company profile.
@@ -422,11 +426,12 @@ All results as returned as JSON.
 </p>
 
 <p>
-<h4>Enabling Twine Social Feeds</h4>
+<h4>Enabling Wordpress Feeds</h4>
 <ul>
-  <li>You can display a social media feed on the front page using a third party widget such as Twine Social.</li>
-  <li>Edit sites/default/settings.php and set $conf['tm_enable_fontpage_socialfeeds'] = true;</li>
-  <li>Set your twinesocial URL in themes/tm/templates/frontpage-socialfeeds.tpl.php</li>
+  <li>You can display a feed of related wordpress blog posts to companies/companies/chapters from your blog.</li>
+  <li>Edit sites/default/settings.php and set $conf['tm_enable_wordpress_feedme'] = true;</li>
+  <li>Install the tm-feeds wordpress plugin (https://github.com/travelmassive/massiveplatform-wordpress-feedme) </li>
+  <li>Set $conf['tm_wordpress_feedme_url'] to the URL to call on page loads to embed feeds.</li>
 </ul>
 </p>
 
